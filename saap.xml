@@ -50,7 +50,6 @@
             </http-interface>
         </management-interfaces>
     </management>
-fffdf
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:1.1">
             <console-handler name="CONSOLE">
@@ -104,7 +103,7 @@ fffdf
         <subsystem xmlns="urn:jboss:domain:datasources:1.0">
             <datasources>
                 <datasource jta="true" jndi-name="java:/Saap" pool-name="java:/Saap" enabled="true" use-ccm="false">
-                    <connection-url>jdbc:postgresql://localhost:5432/saap</connection-url>
+                    <connection-url>jdbc:${env.DATABASE_NAME:mydb}</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql-9.4-1206-jdbc41.jar</driver>
                     <security>
