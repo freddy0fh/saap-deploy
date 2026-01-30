@@ -103,12 +103,12 @@
         <subsystem xmlns="urn:jboss:domain:datasources:1.0">
             <datasources>
                 <datasource jta="true" jndi-name="java:/Saap" pool-name="java:/Saap" enabled="true" use-ccm="false">
-                    <connection-url>jdbc:${env.DATABASE_URL}</connection-url>
+                    <connection-url>jdbc:${env.DB_URL}</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql-9.4-1206-jdbc41.jar</driver>
                     <security>
-                        <user-name>saap</user-name>
-                        <password>${env.DATABASE_PASS}</password>
+                        <user-name>${env.DB_USER}</user-name>
+                        <password>${env.DB_PASS}</password>
                     </security>
                     <validation>
                         <validate-on-match>false</validate-on-match>
