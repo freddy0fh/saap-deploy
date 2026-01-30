@@ -13,7 +13,7 @@ COPY postgresql-9.4-1206-jdbc41.jar $JBOSS_HOME/standalone/deployments/
 USER root
 
 # Modify owners war
-RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/saap-ear.ear
+#RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/saap-ear.ear
 
 # Important, use jboss user to run image
 USER jboss
