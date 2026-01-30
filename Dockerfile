@@ -15,8 +15,5 @@ USER root
 # Modify owners war
 RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/saap-ear.ear
 
-# Expone el puerto HTTP
-EXPOSE 8080
-
-# Inicia WildFly
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]
+# Important, use jboss user to run image
+USER jboss
