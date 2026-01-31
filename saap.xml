@@ -236,6 +236,21 @@
             <log-system-exceptions value="true"/>
         </subsystem>
         <subsystem xmlns="urn:wildfly:elytron:community:18.0" final-providers="combined-providers" disallowed-providers="OracleUcrypto">
+			<jdbc-realm name="SaapJdbcRealm">
+				<principal-query
+					sql="SELECT passwd FROM saap.users u WHERE u.username=?"
+					data-source="java:/Saap">
+					<clear-password-mapper password-index="1"/>
+				</principal-query>
+
+				<principal-query
+					sql="SELECT userroles, 'Roles' FROM saap.userroles r WHERE r.username=?"
+					data-source="java:/Saap">
+					<attribute-mapping>
+						<attribute to="roles" index="1"/>
+					</attribute-mapping>
+				</principal-query>
+			</jdbc-realm>
             <providers>
                 <aggregate-providers name="combined-providers">
                     <providers name="elytron"/>
@@ -248,25 +263,10 @@
                 <file-audit-log name="local-audit" path="audit.log" relative-to="jboss.server.log.dir" format="JSON"/>
             </audit-logging>
             <security-domains>
-				<security-domain name="saap">
-					<authentication>
-						<login-module code="Database" flag="required">
-							<!-- DataSource donde se buscan usuarios/roles -->
-							<module-option name="dsJndiName" value="java:/Saap"/>
-
-							<!-- Consulta para validar el usuario -->
-							<module-option name="principalsQuery"
-										  value="SELECT passwd FROM saap.users u WHERE u.username=?"/>
-
-							<!-- Consulta para obtener roles -->
-							<module-option name="rolesQuery"
-										  value="SELECT userroles, 'Roles' FROM saap.userroles r WHERE r.username=?"/>
-
-							<!-- Algoritmo y encoding de contraseña -->
-							<module-option name="hashAlgorithm" value="MD5"/>
-							<module-option name="hashEncoding" value="base64"/>
-						</login-module>
-					</authentication>
+				<security-domain name="SaapSecurityDomain"
+                     default-realm="SaapJdbcRealm"
+                     permission-mapper="default-permission-mapper">
+					<realm name="SaapJdbcRealm" role-decoder="groups-to-roles"/>
 				</security-domain>
                 <security-domain name="ApplicationDomain" default-realm="ApplicationRealm" permission-mapper="default-permission-mapper">
                     <realm name="ApplicationRealm" role-decoder="groups-to-roles"/>
@@ -316,6 +316,15 @@
                 </permission-set>
             </permission-sets>
             <http>
+				<http-authentication-factory name="AppHttpAuth"
+					http-server-mechanism-factory="global"
+					security-domain="AppSecurityDomain">
+					<mechanism-configuration>
+						<mechanism mechanism-name="BASIC">
+							<mechanism-realm realm-name="saap"/>
+						</mechanism>
+					</mechanism-configuration>
+				</http-authentication-factory>
                 <http-authentication-factory name="application-http-authentication" security-domain="ApplicationDomain" http-server-mechanism-factory="global">
                     <mechanism-configuration>
                         <mechanism mechanism-name="BASIC">
@@ -520,6 +529,11 @@
             <application-security-domains>
                 <application-security-domain name="other" security-domain="ApplicationDomain"/>
             </application-security-domains>
+			<application-security-domains>
+				<application-security-domain
+					name="SaapDomain"
+					http-authentication-factory="AppHttpAuth"/>
+			</application-security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0" statistics-enabled="${wildfly.webservices.statistics-enabled:${wildfly.statistics-enabled:false}}">
             <wsdl-host>${jboss.bind.address:127.0.0.1}</wsdl-host>
