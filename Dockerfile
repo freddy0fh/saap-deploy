@@ -18,7 +18,7 @@ EXPOSE 9990
 EXPOSE 8443
 
 CMD echo $JBOSS_HOME
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0","-c","standalone.xml"]
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 
 # User root to modify war owners
 #USER root
