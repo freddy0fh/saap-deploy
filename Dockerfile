@@ -1,4 +1,4 @@
-FROM jboss/wildfly:latest
+FROM quay.io/wildfly/wildfly
 
 # file author / maintainer
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
