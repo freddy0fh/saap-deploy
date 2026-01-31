@@ -133,10 +133,7 @@
 				<datasource jndi-name="java:/Saap" pool-name="SaapDS" enabled="true">
 				  <connection-url>${env.DB_URL}</connection-url>
 				  <driver>postgresql</driver>
-				  <security>
-					<user-name>${env.DB_USER}</user-name>
-					<password>${env.DB_PASS}</password>
-				  </security>
+				  <security user-name="${env.DB_USER}" password="${env.DB_PASS}"/>
 				</datasource>
                 <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
                     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=${wildfly.h2.compatibility.mode:REGULAR}</connection-url>

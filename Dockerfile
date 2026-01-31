@@ -1,10 +1,21 @@
-FROM quay.io/wildfly/wildfly
+FROM quay.io/wildfly/wildfly:39.0.0.Final
 
 # file author / maintainer
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 COPY saap.xml $JBOSS_HOME/standalone/configuration/
 
+
 COPY postgresql-9.4-1206-jdbc41.jar $JBOSS_HOME/standalone/deployments/
+
+mkdir -p $JBOSS_HOME/modules/system/layers/base/org/postgresql/main
+cp postgresql.jar $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/
+echo "<?xml version='1.0'?><module xmlns='urn:jboss:module:1.5' name='org.postgresql'>
+  <resources><resource-root path='postgresql.jar'/></resources>
+  <dependencies>
+    <module name='javax.api'/>
+    <module name='javax.transaction.api'/>
+  </dependencies>
+</module>" > $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/module.xml
 
 #Copy war to deployments folder
 COPY saap-ear.ear $JBOSS_HOME/standalone/deployments/
