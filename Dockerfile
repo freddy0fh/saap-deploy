@@ -8,14 +8,8 @@ COPY saap.xml $JBOSS_HOME/standalone/configuration/
 COPY postgresql-9.4-1206-jdbc41.jar $JBOSS_HOME/standalone/deployments/
 
 CMD mkdir -p $JBOSS_HOME/modules/system/layers/base/org/postgresql/main
-CMD cp postgresql-9.4-1206-jdbc41.jar $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/
-CMD echo "<?xml version='1.0'?><module xmlns='urn:jboss:module:1.5' name='org.postgresql'>
-  <resources><resource-root path='postgresql.jar'/></resources>
-  <dependencies>
-    <module name='javax.api'/>
-    <module name='javax.transaction.api'/>
-  </dependencies>
-</module>" > $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/module.xml
+COPY postgresql-9.4-1206-jdbc41.jar $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/
+CMD echo "<?xml version='1.0'?><module xmlns='urn:jboss:module:1.5' name='org.postgresql'><resources><resource-root path='postgresql.jar'/></resources><dependencies><module name='javax.api'/><module name='javax.transaction.api'/></dependencies></module>" > $JBOSS_HOME/modules/system/layers/base/org/postgresql/main/module.xml
 
 #Copy war to deployments folder
 COPY saap-ear.ear $JBOSS_HOME/standalone/deployments/
