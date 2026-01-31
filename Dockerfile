@@ -1,7 +1,7 @@
-FROM quay.io/wildfly/wildfly:39.0.0.Final
+FROM quay.io/wildfly/wildfly
 
 # file author / maintainer
-MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
+MAINTAINER "Freddy Castillo" "freddy.geovanni@gmail.com"
 COPY saap.xml $JBOSS_HOME/standalone/configuration/
 
 
