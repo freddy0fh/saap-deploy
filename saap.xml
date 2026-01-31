@@ -248,7 +248,7 @@
                 <file-audit-log name="local-audit" path="audit.log" relative-to="jboss.server.log.dir" format="JSON"/>
             </audit-logging>
             <security-domains>
-				<security-domain name="saap" cache-type="default">
+				<security-domain name="saap">
 					<authentication>
 						<login-module code="Database" flag="required">
 							<!-- DataSource donde se buscan usuarios/roles -->
